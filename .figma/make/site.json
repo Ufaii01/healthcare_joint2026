@@ -1,0 +1,10 @@
+{
+  "description": "This platform enables users to conveniently monitor diabetes by ordering home blood test kits, tracking deliveries, and receiving personalized health advice.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
