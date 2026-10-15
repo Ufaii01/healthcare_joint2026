@@ -3,7 +3,7 @@ import { ArrowRight, BadgeCheck, CalendarClock, Check, ClipboardList, Eye, EyeOf
 import { AddMemberForm, usePeople } from "./members";
 import { fastingPlan, fmtDate, metrics, questions, reasons, rp, testByKey, tests, tierOf, type HistoryEntry, type TestKey } from "./data";
 import { useT } from "./i18n";
-import { Avatar, Button, Card, Check2, Eyebrow, Field, inputCls, TextInput, Title, TierBadge, stages, type Page } from "./ui";
+import { Avatar, Gauge, Button, Card, Check2, Eyebrow, Field, inputCls, TextInput, Title, TierBadge, stages, type Page } from "./ui";
 
 export type Profile = { name: string; email: string; age: string; gender: "Female" | "Male" | ""; contact: string; address: string; avatar: string };
 export type Answers = Record<string, number[]>;
@@ -38,14 +38,10 @@ export function Welcome({ go }: { go: (p: Page) => void }) {
           <div className="relative mx-auto w-full max-w-md">
             <div className="rounded-[28px] bg-white p-6 text-ink shadow-2xl shadow-black/30">
               <div className="flex items-start justify-between">
-                <div><p className="text-xs font-bold uppercase tracking-wider text-mute">{t("Gula darah puasa", "Fasting blood glucose")}</p><p className="mt-1 font-display text-6xl font-semibold leading-none">112 <span className="text-lg font-semibold text-mute">mg/dL</span></p></div>
+                <div><p className="text-xs font-bold uppercase tracking-wider text-mute">{t("Gula Darah Puasa", "Fasting Blood Glucose")}</p><p className="mt-1 font-display text-6xl font-semibold leading-none">112 <span className="text-lg font-semibold text-mute">mg/dL</span></p></div>
                 <TierBadge tier="amber" />
               </div>
-              <div className="mt-7">
-                <div className="relative flex h-3 overflow-hidden rounded-full"><span className="w-[35%] bg-ok-solid" /><span className="w-[22%] bg-warn-solid" /><span className="flex-1 bg-bad-solid" /></div>
-                <div className="relative -mt-[22px] ml-[43%] h-8 w-1 rounded bg-ink" />
-                <div className="mt-2 flex justify-between text-[11px] font-bold text-mute"><span>{t("Normal", "Normal")} &lt;100</span><span>{t("Berisiko", "At risk")} 100–125</span><span>{t("Tinggi", "High")} 126+</span></div>
-              </div>
+              <div className="mt-4"><Gauge m={metrics.glucose} value={112} /></div>
               <p className="mt-5 rounded-xl bg-warn-bg p-3 text-sm font-semibold text-warn">{t("Tes ulang dalam 3 bulan. Kurangi minuman manis dan berjalan kaki setelah makan malam.", "Retest in 3 months. Cut back on sugary drinks and take a walk after dinner.")}</p>
             </div>
             <div className="absolute -bottom-6 -left-6 flex items-center gap-3 rounded-2xl bg-white p-4 text-ink shadow-xl">
@@ -315,8 +311,8 @@ export function HomeScreen({ profile, go, cartCount, booking, entries }: { entri
                   <p className="whitespace-nowrap font-display text-4xl font-semibold leading-none">{latest.value} <span className="text-sm font-semibold text-mute">{lm.unit}</span></p>
                   <p className="mt-1 text-sm text-mute">{t(lm.name)}</p>
                 </div>
-                <TierBadge tier={tierOf(lm, latest.value)} size="lg" />
               </div>
+              <div className="mt-4"><TierBadge tier={tierOf(lm, latest.value)} size="lg" /></div>
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { ArrowLeft, Check, CircleCheck, HeartPulse, OctagonAlert, ShoppingBag, TriangleAlert } from "lucide-react";
-import { tierMeta, type Tier } from "./data";
+import { tierMeta, tierOf, type Metric, type Tier } from "./data";
 import { useT } from "./i18n";
 
 export type Page =
@@ -168,3 +168,25 @@ export function Check2({ on }: { on: boolean }) {
     </span>
   );
 }
+
+export type GaugeM = Pick<Metric, "name" | "unit" | "min" | "max" | "segments">;
+export function Gauge({ m, value }: { m: GaugeM; value: number }) {
+  const t = useT();
+  const cx = 130, cy = 120, r = 92;
+  const frac = (v: number) => Math.min(1, Math.max(0, (v - m.min) / (m.max - m.min)));
+  const pt = (f: number, rad = r) => { const a = Math.PI * (1 - f); return [cx + rad * Math.cos(a), cy - rad * Math.sin(a)]; };
+  const arc = (a: number, b: number) => { const [x1, y1] = pt(a), [x2, y2] = pt(b); return `M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}`; };
+  const f = frac(value); const [nx, ny] = pt(f, r - 30); const tier = tierOf(m, value);
+  return (
+    <svg viewBox="0 0 260 150" className="mx-auto w-full max-w-[320px]" role="img" aria-label={`${t(m.name)}: ${value} ${m.unit}, ${t(tierMeta[tier].en)}`}>
+      {m.segments.map((s, i) => (
+        <path key={i} d={arc(frac(s.from) + 0.004, frac(s.to) - 0.004)} fill="none" stroke={tierMeta[s.tier].hex} strokeWidth={20} />
+      ))}
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="#0d1b2e" strokeWidth={4} strokeLinecap="round" />
+      <circle cx={cx} cy={cy} r={9} fill="#0d1b2e" /><circle cx={cx} cy={cy} r={3.5} fill="white" />
+      <text x={cx - r} y={cy + 20} textAnchor="middle" fontSize="10" fill="#56667b" fontWeight="600">{m.min}</text>
+      <text x={cx + r} y={cy + 20} textAnchor="middle" fontSize="10" fill="#56667b" fontWeight="600">{m.max}</text>
+    </svg>
+  );
+}
+

@@ -116,8 +116,8 @@ export function ProfileScreen({
   const tabs: { id: ProfileTab; label: string; icon: typeof UserRound }[] = [
     { id: "details", label: t("Informasi profil", "Profile information"), icon: UserRound },
     { id: "preferences", label: t("Pengaturan akun", "Account settings"), icon: Bell },
-    { id: "security", label: t("Keamanan", "Security"), icon: ShieldCheck },
     { id: "family", label: t("Anggota keluarga", "Family members"), icon: UsersRound },
+    { id: "security", label: t("Keamanan", "Security"), icon: ShieldCheck },
   ];
   const profileErrors = {
     photo: t("Pilih gambar JPG atau PNG dengan ukuran di bawah 2 MB.", "Choose a JPG or PNG image under 2 MB."),

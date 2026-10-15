@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, BellRing, CalendarCheck, Check, CircleCheck, Download, FlaskConical, HeartPulse, MapPin, Package, Phone, Siren, Stethoscope, Truck, X, Moon, Minus, Wallet, type LucideIcon } from "lucide-react";
 import { useT, useLang, locale } from "./i18n";
 import { fastingPlan, fmtDate, labs, metrics, rp, testByKey, tierMeta, tierOf, type HistoryEntry, type Metric, type Segment, type Tier, type TestKey } from "./data";
-import { Button, Card, Eyebrow, Title, TierBadge, type Page } from "./ui";
+import { Button, Card, Eyebrow, Gauge, Title, TierBadge, type GaugeM, type Page } from "./ui";
 import type { Profile } from "./screens1";
 import { isNumericRow, panels, parseNum, rowValue, tierIdx, type Row } from "./panels";
 import { usePeople } from "./members";
@@ -214,27 +214,6 @@ function OrderDetail({ order, advance, openResult }: { order: Order; advance: (i
 }
 
 // ---------- Gauge ----------
-type GaugeM = Pick<Metric, "name" | "unit" | "min" | "max" | "segments">;
-function Gauge({ m, value }: { m: GaugeM; value: number }) {
-  const t = useT();
-  const cx = 130, cy = 120, r = 92;
-  const frac = (v: number) => Math.min(1, Math.max(0, (v - m.min) / (m.max - m.min)));
-  const pt = (f: number, rad = r) => { const a = Math.PI * (1 - f); return [cx + rad * Math.cos(a), cy - rad * Math.sin(a)]; };
-  const arc = (a: number, b: number) => { const [x1, y1] = pt(a), [x2, y2] = pt(b); return `M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}`; };
-  const f = frac(value); const [nx, ny] = pt(f, r - 30); const tier = tierOf(m, value);
-  return (
-    <svg viewBox="0 0 260 150" className="mx-auto w-full max-w-[320px]" role="img" aria-label={`${t(m.name)}: ${value} ${m.unit}, ${t(tierMeta[tier].en)}`}>
-      {m.segments.map((s, i) => (
-        <path key={i} d={arc(frac(s.from) + 0.004, frac(s.to) - 0.004)} fill="none" stroke={tierMeta[s.tier].hex} strokeWidth={20} />
-      ))}
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="#0d1b2e" strokeWidth={4} strokeLinecap="round" />
-      <circle cx={cx} cy={cy} r={9} fill="#0d1b2e" /><circle cx={cx} cy={cy} r={3.5} fill="white" />
-      <text x={cx - r} y={cy + 20} textAnchor="middle" fontSize="10" fill="#56667b" fontWeight="600">{m.min}</text>
-      <text x={cx + r} y={cy + 20} textAnchor="middle" fontSize="10" fill="#56667b" fontWeight="600">{m.max}</text>
-    </svg>
-  );
-}
-
 const content: Record<Metric["key"], { tips: string[]; tipsEn: string[]; advice: string; adviceEn: string; specialty: string; specialtyEn: string }> = {
   glucose: { tips: ["Atur piring makan: setengah sayuran, seperempat protein, seperempat nasi.", "Berjalan kaki 30 menit, lima hari seminggu.", "Ganti minuman manis dengan air putih atau teh tanpa gula."], tipsEn: ["Plan your plate: half vegetables, a quarter protein, a quarter rice.", "Walk for 30 minutes, five days a week.", "Swap sweet drinks for water or unsweetened tea."], advice: "Gula darah puasa Anda berada di atas rentang ideal. Kurangi minuman manis, tambahkan jalan kaki 20 menit setelah makan malam, dan periksa ulang dalam waktu dekat untuk melihat apakah nilainya mulai turun.", adviceEn: "Your fasting blood sugar is above the ideal range. Cut back on sweet drinks, add a 20-minute walk after dinner, and retest soon to see whether it starts to come down.", specialty: "Penyakit Dalam (Sp.PD)", specialtyEn: "Internal Medicine (Sp.PD)" },
   cholesterol: { tips: ["Pilih makanan yang dipanggang atau dikukus, bukan digoreng.", "Tambahkan oat, kacang-kacangan, dan buah sebagai sumber serat larut.", "Pertahankan olahraga secara teratur."], tipsEn: ["Choose baked or steamed food instead of fried.", "Add oats, nuts, and fruit as sources of soluble fibre.", "Keep exercising regularly."], advice: "Kolesterol Anda berada di batas atas. Kurangi makanan goreng, santan, dan jeroan, serta tingkatkan asupan serat dan aktivitas fisik. Periksa ulang untuk melihat hasilnya.", adviceEn: "Your cholesterol is at the upper limit. Cut back on fried food, coconut milk, and offal, and increase your fibre intake and physical activity. Retest to see the results.", specialty: "Jantung (Sp.JP)", specialtyEn: "Cardiology (Sp.JP)" },
