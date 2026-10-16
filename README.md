@@ -1,6 +1,6 @@
-# Checkups
+# Cek Sehat
 
-Checkups adalah platform skrining kesehatan jarak jauh. Pengguna mengisi kuesioner singkat, mendapat rekomendasi tes lab, memesan alat ambil sampel ke rumah, memantau kurir sampai sampel tiba di lab, lalu membaca hasil dengan penanda warna dan saran langkah berikutnya. Semua bisa dilakukan tanpa keluar rumah.
+Cek Sehat adalah platform skrining kesehatan jarak jauh. Pengguna mengisi kuesioner singkat, mendapat rekomendasi tes lab, memesan alat ambil sampel ke rumah, memantau kurir sampai sampel tiba di lab, lalu membaca hasil dengan penanda warna dan saran langkah berikutnya. Semua bisa dilakukan tanpa keluar rumah.
 
 > Hasil skrining bukan diagnosis. Data lab, kurir, dan hasil di aplikasi ini adalah data contoh untuk keperluan demo.
 
@@ -10,7 +10,7 @@ Checkups adalah platform skrining kesehatan jarak jauh. Pengguna mengisi kuesion
 - Hasil lab biasanya berupa angka tanpa penjelasan, sehingga sulit dipahami orang awam.
 - Keluarga sering perlu dicek bersamaan, tetapi pemesanannya terpisah-pisah.
 
-Checkups menjawabnya dengan rekomendasi tes otomatis, satu kali penjemputan sampel untuk beberapa tes dan beberapa anggota keluarga, serta hasil yang langsung diberi arti (normal, waspada, tinggi).
+Cek Sehat menjawabnya dengan rekomendasi tes otomatis, satu kali penjemputan sampel untuk beberapa tes dan beberapa anggota keluarga, serta hasil yang langsung diberi arti (normal, waspada, tinggi).
 
 ## Alur pengguna
 

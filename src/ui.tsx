@@ -89,9 +89,9 @@ export function SiteHeader({ page, go, cartCount, name, avatar, isRegistered }: 
   return (
     <header className={`sticky top-0 z-40 border-b backdrop-blur print:hidden ${landing ? "border-white/10 bg-brand-900/90 text-white" : "border-line bg-white/90"}`}>
       <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-6 px-6 lg:px-10">
-        <button onClick={() => go(isRegistered ? "home" : "welcome")} className="flex items-center gap-2.5" aria-label={t("Beranda Checkups", "Checkups home")}>
+        <button onClick={() => go(isRegistered ? "home" : "welcome")} className="flex items-center gap-2.5" aria-label={t("Beranda Cek Sehat", "Cek Sehat home")}>
           <span className={`grid size-10 place-items-center rounded-2xl ${landing ? "bg-white text-brand-700" : "bg-brand-600 text-white"}`}><HeartPulse size={21} strokeWidth={2.5} /></span>
-          <span className="font-display text-xl font-semibold">Checkups</span>
+          <span className="font-display text-xl font-semibold">Cek Sehat</span>
         </button>
         {isRegistered && !landing && (
           <nav className="hidden items-center gap-1 md:flex" aria-label={t("Utama", "Main")}>
@@ -137,7 +137,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-16 border-t border-line bg-white print:hidden">
       <div className="mx-auto flex max-w-6xl flex-col justify-between gap-4 px-6 py-8 text-sm text-mute md:flex-row lg:px-10">
-        <p className="flex items-center gap-2 font-semibold text-ink"><HeartPulse size={16} className="text-brand-600" /> Checkups</p>
+        <p className="flex items-center gap-2 font-semibold text-ink"><HeartPulse size={16} className="text-brand-600" /> Cek Sehat</p>
         <p>{t("Hasil skrining bukan diagnosis. Selalu konsultasikan dengan dokter berlisensi. Situs demo dengan data contoh.", "Screening results are not a diagnosis. Always consult a licensed doctor. This is a demo site with sample data.")}</p>
       </div>
     </footer>

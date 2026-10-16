@@ -109,7 +109,7 @@ export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; on
     <div className="rise grid gap-12 py-12 lg:grid-cols-[1fr_440px] lg:py-16">
       <form className="max-w-xl" onSubmit={async (e) => { e.preventDefault(); setTouched(true); setAuthError(false); if (valid && !(await onLogin(email.trim(), password))) setAuthError(true); }}>
         <Eyebrow>{t("Selamat datang kembali", "Welcome back")}</Eyebrow>
-        <Title className="mt-3">{t("Masuk ke Checkups", "Sign in to Checkups")}</Title>
+        <Title className="mt-3">{t("Masuk ke Cek Sehat", "Sign in to Cek Sehat")}</Title>
         <p className="mt-3 text-lg text-mute">{t("Lanjutkan perjalanan kesehatan Anda, tinjau pemesanan, dan lihat hasil terbaru Anda.", "Continue your health journey, review your bookings, and see your latest results.")}</p>
 
         <div className="mt-9 space-y-5">
@@ -156,7 +156,7 @@ export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; on
         </div>
 
         <p className="mt-7 text-sm text-mute">
-          {t("Baru di Checkups?", "New to Checkups?")}{" "}
+          {t("Baru di Cek Sehat?", "New to Cek Sehat?")}{" "}
           <Button variant="ghost" className="!min-h-0 !p-0 align-baseline" onClick={() => go("register")}>{t("Buat akun", "Create account")}</Button>
         </p>
       </form>
@@ -464,7 +464,7 @@ export function QuizResult({ answers, cart, setCart, go }: { answers: Answers; c
       </div>
       <aside className="h-fit lg:sticky lg:top-28">
         <div className="overflow-hidden rounded-3xl bg-brand-900 p-7 text-white">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">{t("Paket Checkups Personal", "Personal Checkups Package")}</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">{t("Paket Cek Sehat Personal", "Personal Cek Sehat Package")}</p>
           <p className="mt-3 font-display text-3xl font-semibold leading-tight">{names}</p>
           <div className="mt-6 flex items-end justify-between border-t border-white/15 pt-5">
             <div><p className="text-xs text-brand-200">{t("Harga paket (diskon 10%)", "Package price (10% off)")}</p><p className="font-display text-4xl font-semibold">{rp(sum * 0.9)}</p></div>
