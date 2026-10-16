@@ -18,4 +18,8 @@ export const authRepository = {
   updatePassword(id: string, passwordHash: string): Promise<User> {
     return prisma.user.update({ where: { id }, data: { passwordHash } });
   },
+
+  updateProfile(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+    return prisma.user.update({ where: { id }, data });
+  },
 };

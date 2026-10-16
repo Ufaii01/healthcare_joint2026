@@ -26,4 +26,10 @@ export const authController = {
     await authService.changePassword(req.user.id, req.body);
     res.status(200).json({ message: "Password updated successfully" });
   },
+
+  async updateProfile(req: Request, res: Response) {
+    if (!req.user) throw new UnauthorizedError();
+    const user = await authService.updateProfile(req.user.id, req.body);
+    res.status(200).json({ user });
+  },
 };

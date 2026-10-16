@@ -22,6 +22,20 @@ export type ChangePasswordInput = {
   newPassword: string;
 };
 
+export type UpdateProfileInput = Partial<{
+  name: string;
+  age: string;
+  gender: "Female" | "Male" | "";
+  contact: string;
+  address: string;
+  avatar: string;
+  language: string;
+  bookingUpdates: boolean;
+  resultAlerts: boolean;
+  healthTips: boolean;
+  twoFactor: boolean;
+}>;
+
 export const authService = {
   async register(input: RegisterInput): Promise<AuthResult> {
     const email = input.email.toLowerCase().trim();
@@ -61,6 +75,15 @@ export const authService = {
     if (!user) {
       throw new NotFoundError("User not found");
     }
+    return toPublicUser(user);
+  },
+
+  async updateProfile(userId: string, input: UpdateProfileInput): Promise<PublicUser> {
+    const existing = await authRepository.findById(userId);
+    if (!existing) {
+      throw new NotFoundError("User not found");
+    }
+    const user = await authRepository.updateProfile(userId, input);
     return toPublicUser(user);
   },
 
