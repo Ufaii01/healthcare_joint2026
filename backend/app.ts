@@ -9,7 +9,8 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler.ts";
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
+  const origins = env.CORS_ORIGIN.split(",").map((o) => o.trim());
+  app.use(cors({ origin: origins.includes("*") ? true : origins, credentials: true }));
   app.use(express.json({ limit: "3mb" }));
 
   app.get("/health", (_req, res) => {

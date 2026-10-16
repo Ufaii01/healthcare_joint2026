@@ -1,7 +1,10 @@
 // Shared frontend API client: base URL, JWT storage, and a typed fetch
 // wrapper used by all api/* modules.
 
-const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ?? "http://localhost:8787";
+// In production on Vercel the API is same-origin (""), so requests go to
+// /api/... on the current host. Locally, VITE_API_URL points at the
+// standalone backend (http://localhost:8787).
+const API_URL = ((import.meta.env.VITE_API_URL as string | undefined) ?? "").replace(/\/$/, "");
 const TOKEN_KEY = "cekSehat.token";
 
 export class ApiError extends Error {
