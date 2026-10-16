@@ -160,4 +160,4 @@ src/            Aplikasi React
   data.ts       Data tes, lab, metrik, dan pertanyaan kuesioner
 vercel.json     Konfigurasi deploy
 ```
-link vercel: 
+link vercel: https://healthcarejoint2026.vercel.app/
