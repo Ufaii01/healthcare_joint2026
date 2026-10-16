@@ -297,7 +297,7 @@ export function Result({ sel, setSel, profile, go, onRetest }: { sel: ResultSel;
   return (
     <div className="rise py-12">
       <div className="hidden border-b border-line pb-4 print:block">
-        <p className="font-display text-xl font-semibold">{t("Cek Sehat — Hasil Pemeriksaan", "Cek Sehat — Test Results")}</p>
+        <p className="font-display text-xl font-semibold">{t("Checkups — Hasil Pemeriksaan", "Checkups — Test Results")}</p>
         <p className="text-sm">{profile.name} · {profile.age} {t("th", "yrs")} · {profile.gender === "Male" ? t("Laki-laki", "Male") : t("Perempuan", "Female")} · {t(sel.lab)}</p>
       </div>
       <Eyebrow>{t("Hasil", "Result")} · {fmtDate(sel.date)}</Eyebrow>

@@ -87,7 +87,7 @@ export function Welcome({ go }: { go: (p: Page) => void }) {
   );
 }
 
-export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; onLogin: (email: string, password: string) => boolean; initialEmail: string }) {
+export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; onLogin: (email: string, password: string) => Promise<boolean>; initialEmail: string }) {
   const t = useT();
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
@@ -107,9 +107,9 @@ export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; on
 
   return (
     <div className="rise grid gap-12 py-12 lg:grid-cols-[1fr_440px] lg:py-16">
-      <form className="max-w-xl" onSubmit={(e) => { e.preventDefault(); setTouched(true); setAuthError(false); if (valid && !onLogin(email.trim(), password)) setAuthError(true); }}>
+      <form className="max-w-xl" onSubmit={async (e) => { e.preventDefault(); setTouched(true); setAuthError(false); if (valid && !(await onLogin(email.trim(), password))) setAuthError(true); }}>
         <Eyebrow>{t("Selamat datang kembali", "Welcome back")}</Eyebrow>
-        <Title className="mt-3">{t("Masuk ke Cek Sehat", "Sign in to Cek Sehat")}</Title>
+        <Title className="mt-3">{t("Masuk ke Checkups", "Sign in to Checkups")}</Title>
         <p className="mt-3 text-lg text-mute">{t("Lanjutkan perjalanan kesehatan Anda, tinjau pemesanan, dan lihat hasil terbaru Anda.", "Continue your health journey, review your bookings, and see your latest results.")}</p>
 
         <div className="mt-9 space-y-5">
@@ -156,7 +156,7 @@ export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; on
         </div>
 
         <p className="mt-7 text-sm text-mute">
-          {t("Baru di Cek Sehat?", "New to Cek Sehat?")}{" "}
+          {t("Baru di Checkups?", "New to Checkups?")}{" "}
           <Button variant="ghost" className="!min-h-0 !p-0 align-baseline" onClick={() => go("register")}>{t("Buat akun", "Create account")}</Button>
         </p>
       </form>
@@ -179,11 +179,12 @@ export function Login({ go, onLogin, initialEmail }: { go: (p: Page) => void; on
   );
 }
 
-export function Register({ profile, setProfile, onContinue }: { profile: Profile; setProfile: (p: Profile) => void; onContinue: (password: string) => void }) {
+export function Register({ profile, setProfile, onContinue }: { profile: Profile; setProfile: (p: Profile) => void; onContinue: (password: string) => Promise<string | null> }) {
   const t = useT();
   const [touched, setTouched] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const set = (k: keyof Profile, v: string) => setProfile({ ...profile, [k]: v } as Profile);
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email);
   const valid = profile.name.trim() && validEmail && password.length >= 6 && Number(profile.age) > 0 && profile.gender && profile.contact.trim().length >= 9 && profile.address.trim();
@@ -191,7 +192,7 @@ export function Register({ profile, setProfile, onContinue }: { profile: Profile
   const rows = [[t("Hemoglobin", "Hemoglobin"), t("12,0 – 15,5 g/dL", "12.0 – 15.5 g/dL"), t("13,0 – 17,0 g/dL", "13.0 – 17.0 g/dL")], [t("Kreatinin", "Creatinine"), t("0,6 – 1,1 mg/dL", "0.6 – 1.1 mg/dL"), t("0,7 – 1,3 mg/dL", "0.7 – 1.3 mg/dL")], [t("Kolesterol HDL", "HDL cholesterol"), t("di atas 50 mg/dL", "above 50 mg/dL"), t("di atas 40 mg/dL", "above 40 mg/dL")]];
   return (
     <div className="rise grid gap-12 py-12 lg:grid-cols-[1fr_440px] lg:py-16">
-      <form onSubmit={(e) => { e.preventDefault(); setTouched(true); if (valid) onContinue(password); }}>
+      <form onSubmit={async (e) => { e.preventDefault(); setTouched(true); setSubmitError(null); if (valid) setSubmitError(await onContinue(password)); }}>
         <Eyebrow>{t("Langkah 0 · Buat profil", "Step 0 · Create profile")}</Eyebrow>
         <Title className="mt-3">{t("Ceritakan sedikit tentang Anda", "Tell us a little about yourself")}</Title>
         <p className="mt-3 max-w-xl text-lg text-mute">{t("Kurang dari satu menit. Data Anda tetap privat dan hanya dibagikan kepada lab yang Anda pilih.", "Less than a minute. Your data stays private and is only shared with the lab you choose.")}</p>
@@ -245,6 +246,7 @@ export function Register({ profile, setProfile, onContinue }: { profile: Profile
           </Field></div>
         </div>
         {touched && !valid && <p className="mt-4 text-sm font-semibold text-bad">{t("Mohon lengkapi semua kolom untuk melanjutkan.", "Please complete all fields to continue.")}</p>}
+        {submitError && <p className="mt-4 text-sm font-semibold text-bad">{submitError}</p>}
         <div className="mt-7 flex flex-wrap items-center gap-4">
           <Button type="submit" className="!min-h-14 !px-8">{t("Lanjutkan", "Continue")} <ArrowRight size={18} /></Button>
           <button type="button" className="text-sm font-bold text-brand-700 hover:underline" onClick={() => { setPassword("ceksehat123"); setProfile({ name: "Sari Wulandari", email: "sari.wulandari@example.com", age: "34", gender: "Female", contact: "0812 3456 7890", address: "Jl. Senopati No. 42, Kebayoran Baru, Jakarta Selatan 12190", avatar: "" }); }}>{t("Isi dengan data contoh", "Fill in sample data")}</button>
@@ -462,7 +464,7 @@ export function QuizResult({ answers, cart, setCart, go }: { answers: Answers; c
       </div>
       <aside className="h-fit lg:sticky lg:top-28">
         <div className="overflow-hidden rounded-3xl bg-brand-900 p-7 text-white">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">{t("Paket Cek Sehat Personal", "Personal Cek Sehat Package")}</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">{t("Paket Checkups Personal", "Personal Checkups Package")}</p>
           <p className="mt-3 font-display text-3xl font-semibold leading-tight">{names}</p>
           <div className="mt-6 flex items-end justify-between border-t border-white/15 pt-5">
             <div><p className="text-xs text-brand-200">{t("Harga paket (diskon 10%)", "Package price (10% off)")}</p><p className="font-display text-4xl font-semibold">{rp(sum * 0.9)}</p></div>

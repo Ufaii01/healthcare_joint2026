@@ -42,7 +42,7 @@ export function ProfileScreen({
   setProfile: (profile: Profile) => void;
   preferences: Preferences;
   setPreferences: (preferences: Preferences) => void;
-  changePassword: (currentPassword: string, newPassword: string) => boolean;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
   onLogout: () => void;
 }) {
   const t = useT();
@@ -92,7 +92,7 @@ export function ProfileScreen({
     setSaved(true);
   };
 
-  const submitPassword = (event: FormEvent) => {
+  const submitPassword = async (event: FormEvent) => {
     event.preventDefault();
     setPasswordMessage("");
     if (currentPassword.length < 6 || newPassword.length < 8) {
@@ -103,7 +103,7 @@ export function ProfileScreen({
       setPasswordMessage("mismatch");
       return;
     }
-    if (!changePassword(currentPassword, newPassword)) {
+    if (!(await changePassword(currentPassword, newPassword))) {
       setPasswordMessage("wrong");
       return;
     }
@@ -224,7 +224,7 @@ export function ProfileScreen({
               </div>
 
               {profileError && <p className="mt-4 text-sm font-semibold text-bad">{profileErrors[profileError]}</p>}
-              {saved && <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-ok"><Check size={16} /> {t("Profil berhasil disimpan dan diperbarui di seluruh Cek Sehat.", "Profile saved and updated across Cek Sehat.")}</p>}
+              {saved && <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-ok"><Check size={16} /> {t("Profil berhasil disimpan dan diperbarui di seluruh Checkups.", "Profile saved and updated across Checkups.")}</p>}
               <div className="mt-7 flex flex-wrap gap-3">
                 <Button type="submit"><Save size={17} /> {t("Simpan perubahan", "Save changes")}</Button>
                 <Button variant="secondary" onClick={() => { setDraft(profile); setProfileError(""); setSaved(false); }}>{t("Batalkan perubahan", "Discard changes")}</Button>
@@ -269,7 +269,7 @@ export function ProfileScreen({
           <Card className="p-6 md:p-8">
             <Eyebrow>{t("Preferensi", "Preferences")}</Eyebrow>
             <Title className="mt-2 !text-3xl">{t("Pengaturan akun", "Account settings")}</Title>
-            <p className="mt-2 text-mute">{t("Pilih cara Cek Sehat berkomunikasi dengan Anda. Perubahan tersimpan otomatis.", "Choose how Cek Sehat communicates with you. Changes are saved automatically.")}</p>
+            <p className="mt-2 text-mute">{t("Pilih cara Checkups berkomunikasi dengan Anda. Perubahan tersimpan otomatis.", "Choose how Checkups communicates with you. Changes are saved automatically.")}</p>
 
             <div className="mt-8 divide-y divide-line">
               <div className="flex flex-col gap-4 py-5 first:pt-0 sm:flex-row sm:items-center">
