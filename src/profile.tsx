@@ -42,7 +42,7 @@ export function ProfileScreen({
   setProfile: (profile: Profile) => void;
   preferences: Preferences;
   setPreferences: (preferences: Preferences) => void;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
+  changePassword: (currentPassword: string, newPassword: string) => boolean;
   onLogout: () => void;
 }) {
   const t = useT();
@@ -92,7 +92,7 @@ export function ProfileScreen({
     setSaved(true);
   };
 
-  const submitPassword = async (event: FormEvent) => {
+  const submitPassword = (event: FormEvent) => {
     event.preventDefault();
     setPasswordMessage("");
     if (currentPassword.length < 6 || newPassword.length < 8) {
@@ -103,7 +103,7 @@ export function ProfileScreen({
       setPasswordMessage("mismatch");
       return;
     }
-    if (!(await changePassword(currentPassword, newPassword))) {
+    if (!changePassword(currentPassword, newPassword)) {
       setPasswordMessage("wrong");
       return;
     }
